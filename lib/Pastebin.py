@@ -1,7 +1,7 @@
 from Site import Site
 from bs4 import BeautifulSoup
 
-class PastebinPaste:
+class PastebinPaste(Paste):
 	def __init__(self, id):
 		self.id = id
 		self.url = 'http://pastebin.com/raw.php?i=' + self.id
