@@ -12,8 +12,9 @@ regexes = {
 	'google_api' : re.compile(r'(AIza.{35})', re.I),
 	'db_leak' : [
 					re.compile(r'((?:users?)|(?:members?)|(?:accounts?)[-_|/\s]?(?:names?)|(?:ids?)\W)', re.I),
-					re.compile(r'target\s*?:?\s*?([a-z][\w-]+:/{1,3}(?:[-\w\s_]\.)*)') , # very basic URL check - may be improved later
-					re.compile(r'(database)'),
-					re.compile(r'()')
+					re.compile(r'target\s*?:?\s*?([a-z][\w-]+:/{1,3}(?:[-\w\s_]\.)*)', re.I) , # very basic URL check - may be improved later
+					re.compile(r'((?:mysql)|(?:sql\s*server))', re.I)
+					re.compile(r'(database)', re.I),
+					re.compile(r'(table)', re.I)
 				]
 }
