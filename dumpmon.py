@@ -12,14 +12,20 @@ import requests
 from lib.regexes import regexes
 from lib.Pastebin import Pastebin, PastebinPaste
 import time
-import python-twitter
+import twitter
 
 CONSUMER_KEY = 'your_consumer_key'
 CONSUMER_SECRET = 'your_consumer_secret'
+ACCESS_TOKEN = 'your_access_token'
+ACCESS_TOKEN_SECRET = 'your_access_token_secret'
 
 def monitor():
 	print '[*] Monitoring...'
 	print '[*] Ctrl+C to quit'
+	bot = twitter.Api(consumer_key=CONSUMER_KEY,
+                      consumer_secret=CONSUMER_SECRET,
+                      access_token_key=ACCESS_TOKEN,
+                      access_token_secret=ACCESS_TOKEN_SECRET)
 	pastie = Pastebin()
 	pastie.update()
 	try:
@@ -28,12 +34,9 @@ def monitor():
 				paste = pastie.get()
 				pastie.ref_id = paste.id
 				print 'Checking ' + paste.url
-				result = requests.get(paste.url).text
-				for key, regex in regexes.iteritems():
-					if key == 'db_leak': continue
-					# Get the matches - remove the duplicates
-					matches = list(set(regex.findall(result)))
-					if len(matches) != 0: print '\t' + key + ' ' + '\n'.join('\t[*]' + finding for finding in matches)
+				paste.text = requests.get(paste.url).text
+				tweet = build_tweet(result)
+				if tweet: bot.PostUpdate(paste.url, tweet)
 			pastie.update()
 			# If no new results... sleep for 5 sec
 			while pastie.empty():
@@ -42,6 +45,21 @@ def monitor():
 				pastie.update()
 	except KeyboardInterrupt:
 		print 'Stopped.'
+
+def build_tweet(url, paste):
+	tweet = None
+	matcher = Matcher()
+	if matcher.matches(paste.text):
+		tweet = url
+		if tweet.type == 'db_dump'
+			if paste.num_emails > 0: tweet += ' Emails: ' + str(paste.num_emails)
+			if paste.num_hashes > 0: tweet += ' Hashes: ' + str(paste.num_hashes)
+			if paste.num_hashes > 0 and paste.num_emails > 0: tweet += 'E/H: ' + str(round(paste.num_emails / float(paste.num_hashes)), 2)
+			tweet += 'Keywords: ' + str(tweet.db_dump_percent)
+		elif tweet.type in ['Cisco', 'Juniper']:
+			tweet += ' Possible ' + tweet.type + ' configuration'
+		elif tweet.type == 'ssh_private':
+			tweet += ' Possible SSH private key'
 
 
 if __name__ == "__main__":
