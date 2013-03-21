@@ -12,6 +12,10 @@ import requests
 from lib.regexes import regexes
 from lib.Pastebin import Pastebin, PastebinPaste
 import time
+import python-twitter
+
+CONSUMER_KEY = 'your_consumer_key'
+CONSUMER_SECRET = 'your_consumer_secret'
 
 def monitor():
 	print '[*] Monitoring...'
