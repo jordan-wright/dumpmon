@@ -5,6 +5,7 @@ class PastebinPaste(Paste):
 	def __init__(self, id):
 		self.id = id
 		self.url = 'http://pastebin.com/raw.php?i=' + self.id
+		super(Paste, self).__init__()
 
 class Pastebin(Site):
 	def __init__(self, last_id=None):

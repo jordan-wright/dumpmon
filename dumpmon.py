@@ -13,11 +13,11 @@ from lib.regexes import regexes
 from lib.Pastebin import Pastebin, PastebinPaste
 import time
 import twitter
+import settings
 
-CONSUMER_KEY = 'your_consumer_key'
-CONSUMER_SECRET = 'your_consumer_secret'
-ACCESS_TOKEN = 'your_access_token'
-ACCESS_TOKEN_SECRET = 'your_access_token_secret'
+def record(text):
+	with open(settings.tweet_history, 'a') as history:
+		history.append(tweet + '\n')
 
 def monitor():
 	print '[*] Monitoring...'
@@ -36,7 +36,9 @@ def monitor():
 				print 'Checking ' + paste.url
 				paste.text = requests.get(paste.url).text
 				tweet = build_tweet(result)
-				if tweet: bot.PostUpdate(paste.url, tweet)
+				if tweet:
+					record(tweet)
+					bot.PostUpdate(paste.url, tweet)
 			pastie.update()
 			# If no new results... sleep for 5 sec
 			while pastie.empty():
@@ -48,8 +50,7 @@ def monitor():
 
 def build_tweet(url, paste):
 	tweet = None
-	matcher = Matcher()
-	if matcher.matches(paste.text):
+	if paste.matches():
 		tweet = url
 		if tweet.type == 'db_dump'
 			if paste.num_emails > 0: tweet += ' Emails: ' + str(paste.num_emails)
