@@ -16,10 +16,19 @@ import twitter
 import settings
 
 def record(text):
+	'''
+	record(text) : Records text to the tweet_history file
+
+	'''
 	with open(settings.tweet_history, 'a') as history:
 		history.append(tweet + '\n')
 
 def monitor():
+	'''
+	monitor() - Main function... monitors for new pastes, produces tweets, etc.
+				Basically the bot's operation
+
+	'''
 	print '[*] Monitoring...'
 	print '[*] Ctrl+C to quit'
 	bot = twitter.Api(consumer_key=CONSUMER_KEY,
@@ -49,6 +58,10 @@ def monitor():
 		print 'Stopped.'
 
 def build_tweet(url, paste):
+	'''
+	build_tweet(url, paste) - Determines if the paste is interesting and, if so, builds and returns the tweet accordingly
+
+	'''
 	tweet = None
 	if paste.matches():
 		tweet = url

@@ -9,3 +9,6 @@ ACCESS_TOKEN_SECRET = 'your_access_token_secret'
 # Thresholds
 EMAIL_THRESHOLD = 25
 DB_KEYWORDS_THRESHOLD = .50
+
+# Other configuration
+tweet_history = ".tweet_history"
