@@ -31,10 +31,10 @@ def monitor():
 	'''
 	print '[*] Monitoring...'
 	print '[*] Ctrl+C to quit'
-	bot = twitter.Api(consumer_key=CONSUMER_KEY,
-                      consumer_secret=CONSUMER_SECRET,
-                      access_token_key=ACCESS_TOKEN,
-                      access_token_secret=ACCESS_TOKEN_SECRET)
+	bot = twitter.Api(consumer_key=settings.CONSUMER_KEY,
+                      consumer_secret=settings.CONSUMER_SECRET,
+                      access_token_key=settings.ACCESS_TOKEN,
+                      access_token_secret=settings.ACCESS_TOKEN_SECRET)
 	pastie = Pastebin()
 	pastie.update()
 	try:
