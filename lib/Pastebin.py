@@ -1,11 +1,12 @@
 from Site import Site
+from Paste import Paste
 from bs4 import BeautifulSoup
 
 class PastebinPaste(Paste):
 	def __init__(self, id):
 		self.id = id
 		self.url = 'http://pastebin.com/raw.php?i=' + self.id
-		super(Paste, self).__init__()
+		super(PastebinPaste, self).__init__()
 
 class Pastebin(Site):
 	def __init__(self, last_id=None):
