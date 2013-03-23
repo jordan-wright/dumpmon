@@ -23,14 +23,23 @@ def record(text):
 	with open(settings.tweet_history, 'a') as history:
 		history.write(text + '\n')
 
+def log(text):
+	'''
+	log(text): Logs message to both STDOUT and to .output_log file
+
+	'''
+	print text
+	with open(settings.log_file, 'a') as logfile:
+		logfile.write(text + '\n')
+
 def monitor():
 	'''
 	monitor() - Main function... monitors for new pastes, produces tweets, etc.
 				Basically the bot's operation
 
 	'''
-	print '[*] Monitoring...'
-	print '[*] Ctrl+C to quit'
+	log('[*] Monitoring...')
+	log('[*] Ctrl+C to quit')
 	bot = twitter.Api(consumer_key=settings.CONSUMER_KEY,
                       consumer_secret=settings.CONSUMER_SECRET,
                       access_token_key=settings.ACCESS_TOKEN,
@@ -42,7 +51,7 @@ def monitor():
 			while not pastie.empty():
 				paste = pastie.get()
 				pastie.ref_id = paste.id
-				print 'Checking ' + paste.url
+				log('Checking ' + paste.url)
 				paste.text = requests.get(paste.url).text
 				tweet = build_tweet(paste)
 				if tweet:
@@ -52,11 +61,11 @@ def monitor():
 			pastie.update()
 			# If no new results... sleep for 5 sec
 			while pastie.empty():
-				print 'No results... sleeping'
+				log('No results... sleeping')
 				time.sleep(10)
 				pastie.update()
 	except KeyboardInterrupt:
-		print 'Stopped.'
+		log('Stopped.')
 
 def build_tweet(paste):
 	'''

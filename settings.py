@@ -12,3 +12,4 @@ DB_KEYWORDS_THRESHOLD = .50
 
 # Other configuration
 tweet_history = ".tweet_history"
+log_file = ".output_log"

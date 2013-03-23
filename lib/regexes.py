@@ -19,6 +19,12 @@ regexes = {
 	'blacklist' : [	# I was hoping to not have to make a blacklist,
 					re.compile(r'(?:select\s+.*?from)|(?:join)|(?:declare\s+.*?\s+as\s+)', re.I), # SQL
 					re.compile(r'((?:define\(.*?\))|(?:require_once\(.*?\)))', re.I), # PHP
-					re.compile(r'(function.*?\(.*?\))', re.I)
-				] 
+					re.compile(r'(function.*?\(.*?\))', re.I),
+					re.compile(r'Configuration\.Factory', re.I),
+					re.compile(r'(?:border)|(?:background)-color)', re.I),
+					re.compile(r'Traceback \(most recent call last\)', re.I)
+				],
+	'white_list' : [ # This is for regex that is almost sure to be in database leaks
+					re.compile(r'[-|+\n]+?\s*(?:table)|(?:column)|(?:customers?)|(?:email)|(?:users?)|(?:members?)|(?:accounts?)[-_|/\s]?(?:address)|(?:names?)|(?:ids?[^")])\s*[-|]', re.I)
+				]
 }
