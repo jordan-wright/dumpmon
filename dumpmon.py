@@ -5,7 +5,7 @@
 # ---------------------------------------------------
 # To Do:
 #
-#	- Create More/Better regular regex
+#	- Refine Regex
 #	- Create/Keep track of statistics
 
 import requests
@@ -44,10 +44,11 @@ def monitor():
 				pastie.ref_id = paste.id
 				print 'Checking ' + paste.url
 				paste.text = requests.get(paste.url).text
-				tweet = build_tweet(result)
+				tweet = build_tweet(paste)
 				if tweet:
+					print tweet
 					record(tweet)
-					bot.PostUpdate(paste.url, tweet)
+					#bot.PostUpdate(paste.url, tweet)
 			pastie.update()
 			# If no new results... sleep for 5 sec
 			while pastie.empty():
@@ -57,23 +58,28 @@ def monitor():
 	except KeyboardInterrupt:
 		print 'Stopped.'
 
-def build_tweet(url, paste):
+def build_tweet(paste):
 	'''
 	build_tweet(url, paste) - Determines if the paste is interesting and, if so, builds and returns the tweet accordingly
 
 	'''
 	tweet = None
-	if paste.matches():
-		tweet = url
-		if tweet.type == 'db_dump'
-			if paste.num_emails > 0: tweet += ' Emails: ' + str(paste.num_emails)
+	if paste.match():
+		tweet = paste.url
+		if paste.type == 'db_dump':
+			if paste.num_emails > 0:
+				tweet += ' Emails: ' + str(paste.num_emails)
 			if paste.num_hashes > 0: tweet += ' Hashes: ' + str(paste.num_hashes)
-			if paste.num_hashes > 0 and paste.num_emails > 0: tweet += 'E/H: ' + str(round(paste.num_emails / float(paste.num_hashes)), 2)
-			tweet += 'Keywords: ' + str(tweet.db_dump_percent)
-		elif tweet.type in ['Cisco', 'Juniper']:
-			tweet += ' Possible ' + tweet.type + ' configuration'
-		elif tweet.type == 'ssh_private':
+			if paste.num_hashes > 0 and paste.num_emails > 0: tweet += ' E/H: ' + str(round(paste.num_emails / float(paste.num_hashes), 2))
+			tweet += 'Keywords: ' + str(paste.db_keywords)
+			tweet += ' #DB_LEAK'
+		elif paste.type in ['Cisco', 'Juniper']:
+			tweet += ' Possible ' + paste.type + ' configuration'
+		elif paste.type == 'ssh_private':
 			tweet += ' Possible SSH private key'
+	if paste.num_emails > 0:
+		print paste.emails
+	return tweet
 
 
 if __name__ == "__main__":
