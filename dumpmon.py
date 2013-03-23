@@ -21,7 +21,7 @@ def record(text):
 
 	'''
 	with open(settings.tweet_history, 'a') as history:
-		history.append(tweet + '\n')
+		history.write(text + '\n')
 
 def monitor():
 	'''

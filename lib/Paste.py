@@ -34,7 +34,7 @@ class Paste(object):
 		self.num_emails = len(self.emails)
 		self.num_hashes = len(self.hashes)
 		for regex in regexes['db_keywords']:
-			if regex.search(self.text): self.db_keywords += 1/len(regexes['db_keywords'])
+			if regex.search(self.text): self.db_keywords += 1/float(len(regexes['db_keywords']))
 		if (self.num_emails >= settings.EMAIL_THRESHOLD) or (self.db_keywords >= settings.DB_KEYWORDS_THRESHOLD):
 			self.type = 'db_dump'
 		if regexes['cisco_hash'].search(self.text) or regexes['cisco_pass'].search(self.text): self.type = 'Cisco'
