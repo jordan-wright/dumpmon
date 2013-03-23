@@ -71,7 +71,7 @@ def build_tweet(paste):
 				tweet += ' Emails: ' + str(paste.num_emails)
 			if paste.num_hashes > 0: tweet += ' Hashes: ' + str(paste.num_hashes)
 			if paste.num_hashes > 0 and paste.num_emails > 0: tweet += ' E/H: ' + str(round(paste.num_emails / float(paste.num_hashes), 2))
-			tweet += 'Keywords: ' + str(paste.db_keywords)
+			tweet += ' Keywords: ' + str(paste.db_keywords)
 			tweet += ' #DB_LEAK'
 		elif paste.type in ['Cisco', 'Juniper']:
 			tweet += ' Possible ' + paste.type + ' configuration'
