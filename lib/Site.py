@@ -42,13 +42,3 @@ class Site(object):
 		self.queue = []
 	def list(self):
 		print '\n'.join(url for url in self.queue)
-	# Also wanted to make some helper functions for downloads
-	def download(self, url):
-		try:
-			response = requests.get(url).text
-		except requests.ConnectionError:
-			print '[!] Critical Error - Cannot connect to Pastebin'
-			time.sleep(5)
-			print '[!] Retrying...'
-			response = self.download(url)
-		return response

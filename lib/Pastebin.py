@@ -1,10 +1,12 @@
 from Site import Site
 from Paste import Paste
 from bs4 import BeautifulSoup
+import helper
 
 class PastebinPaste(Paste):
 	def __init__(self, id):
 		self.id = id
+		self.headers = None
 		self.url = 'http://pastebin.com/raw.php?i=' + self.id
 		super(PastebinPaste, self).__init__()
 
@@ -17,7 +19,7 @@ class Pastebin(Site):
 	def update(self):
 		'''update(self) - Fill Queue with new Pastebin IDs'''
 		print '[*] Retrieving Pastebin ID\'s'
-		results = BeautifulSoup(self.download('http://pastebin.com/archive')).find_all(lambda tag: tag.name=='td' and tag.a and '/archive/' not in tag.a['href'] and tag.a['href'][1:])	
+		results = BeautifulSoup(helper.download(self.BASE_URL + '/archive')).find_all(lambda tag: tag.name=='td' and tag.a and '/archive/' not in tag.a['href'] and tag.a['href'][1:])	
 		new_pastes = []
 		if not self.ref_id: results = results[:60]
 		for entry in results:

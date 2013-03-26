@@ -11,9 +11,11 @@
 import requests
 from lib.regexes import regexes
 from lib.Pastebin import Pastebin, PastebinPaste
+import lib.helper
 import time
 import twitter
 import settings
+import threading
 
 def record(text):
 	'''
@@ -46,13 +48,15 @@ def monitor():
                       access_token_secret=settings.ACCESS_TOKEN_SECRET)
 	pastie = Pastebin()
 	pastie.update()
+	slexy = Slexy()
+	slexy.update()
 	try:
 		while(1):
 			while not pastie.empty():
 				paste = pastie.get()
 				pastie.ref_id = paste.id
 				log('Checking ' + paste.url)
-				paste.text = pastie.download(paste.url)
+				paste.text = helper.download(paste.url)
 				tweet = build_tweet(paste)
 				if tweet:
 					print tweet
@@ -83,7 +87,7 @@ def build_tweet(paste):
 			tweet += ' Keywords: ' + str(paste.db_keywords)
 			tweet += ' #DB_LEAK'
 		elif paste.type == 'google_api':
-			tweet += 'Found possible Google API key(s)'
+			tweet += ' Found possible Google API key(s)'
 		elif paste.type in ['Cisco', 'Juniper']:
 			tweet += ' Possible ' + paste.type + ' configuration'
 		elif paste.type == 'ssh_private':
