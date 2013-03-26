@@ -2,6 +2,8 @@ from Site import Site
 from Paste import Paste
 from bs4 import BeautifulSoup
 import helper
+from time import sleep
+from settings import SLEEP_SLEXY
 
 class SlexyPaste(Paste):
 	def __init__(self, id):
@@ -31,3 +33,25 @@ class Slexy(Site):
 		for entry in new_pastes[::-1]:
 			print '[+] Adding URL: ' + entry.url
 			self.put(entry)
+	def monitor(self, bot, l_lock, t_lock):
+		self.update()
+		while(1):
+			while not self.empty():
+				paste = self.get()
+				self.ref_id = paste.id
+				with l_lock:
+					helper.log('Checking ' + paste.url)
+				paste.text = helper.download(paste.url)
+				tweet = helper.build_tweet(paste)
+				if tweet:
+					print tweet
+					with t_lock:
+						helper.record(tweet)
+						#bot.PostUpdate(paste.url, tweet)
+			self.update()
+			# If no new results... sleep for 5 sec
+			while self.empty():
+				with l_lock:
+					helper.log('No results... sleeping')
+				sleep(SLEEP_SLEXY)
+				self.update()

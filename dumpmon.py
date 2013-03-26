@@ -8,93 +8,42 @@
 #	- Refine Regex
 #	- Create/Keep track of statistics
 
-import requests
 from lib.regexes import regexes
 from lib.Pastebin import Pastebin, PastebinPaste
-import lib.helper
-import time
+from lib.Slexy import Slexy, SlexyPaste
+from lib.helper import log
+from time import sleep
 import twitter
-import settings
+from settings import CONSUMER_KEY, CONSUMER_SECRET, ACCESS_TOKEN, ACCESS_TOKEN_SECRET
 import threading
-
-def record(text):
-	'''
-	record(text) : Records text to the tweet_history file
-
-	'''
-	with open(settings.tweet_history, 'a') as history:
-		history.write(text + '\n')
-
-def log(text):
-	'''
-	log(text): Logs message to both STDOUT and to .output_log file
-
-	'''
-	print text
-	with open(settings.log_file, 'a') as logfile:
-		logfile.write(text + '\n')
 
 def monitor():
 	'''
-	monitor() - Main function... monitors for new pastes, produces tweets, etc.
-				Basically the bot's operation
+	monitor() - Main function... creates and starts threads
 
 	'''
 	log('[*] Monitoring...')
 	log('[*] Ctrl+C to quit')
-	bot = twitter.Api(consumer_key=settings.CONSUMER_KEY,
-                      consumer_secret=settings.CONSUMER_SECRET,
-                      access_token_key=settings.ACCESS_TOKEN,
-                      access_token_secret=settings.ACCESS_TOKEN_SECRET)
+	bot = twitter.Api(consumer_key=CONSUMER_KEY,
+                      consumer_secret=CONSUMER_SECRET,
+                      access_token_key=ACCESS_TOKEN,
+                      access_token_secret=ACCESS_TOKEN_SECRET)
 	pastie = Pastebin()
-	pastie.update()
 	slexy = Slexy()
-	slexy.update()
+	# Create lock for both output log and tweet action
+	log_lock = threading.Lock()
+	tweet_lock = threading.Lock()
+	pastebin_thread = threading.Thread(target=pastie.monitor, args=[bot,log_lock, tweet_lock])
+	pastebin_thread.daemon = True
+	pastebin_thread.start()
+	slexy_thread = threading.Thread(target=slexy.monitor, args=[bot,log_lock, tweet_lock])
+	slexy_thread.daemon = True
+	slexy_thread.start()
 	try:
 		while(1):
-			while not pastie.empty():
-				paste = pastie.get()
-				pastie.ref_id = paste.id
-				log('Checking ' + paste.url)
-				paste.text = helper.download(paste.url)
-				tweet = build_tweet(paste)
-				if tweet:
-					print tweet
-					record(tweet)
-					#bot.PostUpdate(paste.url, tweet)
-			pastie.update()
-			# If no new results... sleep for 5 sec
-			while pastie.empty():
-				log('No results... sleeping')
-				time.sleep(10)
-				pastie.update()
+			sleep(5)
 	except KeyboardInterrupt:
 		log('Stopped.')
-
-def build_tweet(paste):
-	'''
-	build_tweet(url, paste) - Determines if the paste is interesting and, if so, builds and returns the tweet accordingly
-
-	'''
-	tweet = None
-	if paste.match():
-		tweet = paste.url
-		if paste.type == 'db_dump':
-			if paste.num_emails > 0:
-				tweet += ' Emails: ' + str(paste.num_emails)
-			if paste.num_hashes > 0: tweet += ' Hashes: ' + str(paste.num_hashes)
-			if paste.num_hashes > 0 and paste.num_emails > 0: tweet += ' E/H: ' + str(round(paste.num_emails / float(paste.num_hashes), 2))
-			tweet += ' Keywords: ' + str(paste.db_keywords)
-			tweet += ' #DB_LEAK'
-		elif paste.type == 'google_api':
-			tweet += ' Found possible Google API key(s)'
-		elif paste.type in ['Cisco', 'Juniper']:
-			tweet += ' Possible ' + paste.type + ' configuration'
-		elif paste.type == 'ssh_private':
-			tweet += ' Possible SSH private key'
-	if paste.num_emails > 0:
-		print paste.emails
-	return tweet
 
 
 if __name__ == "__main__":

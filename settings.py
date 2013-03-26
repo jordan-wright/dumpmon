@@ -10,6 +10,10 @@ ACCESS_TOKEN_SECRET = 'your_access_token_secret'
 EMAIL_THRESHOLD = 20
 DB_KEYWORDS_THRESHOLD = .50
 
+# Time to Sleep for each site
+SLEEP_SLEXY = 60
+SLEEP_PASTEBIN = 10
+
 # Other configuration
 tweet_history = ".tweet_history"
 log_file = ".output_log"
