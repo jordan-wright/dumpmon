@@ -8,23 +8,25 @@ regexes = {
 	'lulz' : re.compile(r'(?:lulzsec)|(?:antisec)', re.I),
 	'cisco_hash' : re.compile(r'enable\s+secret', re.I),
 	'cisco_pass' : re.compile(r'enable\s+password', re.I),
-	'google_api' : re.compile(r'(AIza.{35})', re.I),
+	'google_api' : re.compile(r'(AIza.{35})'),
 	'db_keywords' : [
-					re.compile(r'(((?:customers?)|(?:email)|(?:users?)|(?:members?)|(?:accounts?)[-_|/\s]?(?:address)|(?:names?)|(?:ids?[^")])\W))', re.I),
+					re.compile(r'(((?:customers?)|(?:email)|(?:users?)|(?:members?)|(?:accounts?)[-_|/\s]?(?:address)|(?:names?)|(?:ids?[^")a-zA-Z0-9_])))', re.I),
 					re.compile(r'(?:\btarget)|(?:\bsite)\s*?:?\s*?((?:[a-z][\w-]+:/{1,3})?(?:[-\w\s_]\.)*)', re.I), # very basic URL check - may be improved later
-					re.compile(r'((?:my\s?sql[^i_])|(?:sql\s*server))', re.I),
+					re.compile(r'((?:my\s?sql[^i_\.])|(?:sql\s*server))', re.I),
 					re.compile(r'((?:data[-_\s]*base)|(?:\Wdb))', re.I), #added the non-word char before db.. we'll see if that helps
 					re.compile(r'(table\s*?:)', re.I)
 				],
 	'blacklist' : [	# I was hoping to not have to make a blacklist,
-					re.compile(r'(?:select\s+.*?from)|(?:join)|(?:declare\s+.*?\s+as\s+)', re.I), # SQL
+					re.compile(r'(?:select\s+.*?from)|(?:join)|(?:declare\s+.*?\s+as\s+)|(?:update.*?set)|(?:insert.*?into)', re.I), # SQL
 					re.compile(r'((?:define\(.*?\))|(?:require_once\(.*?\)))', re.I), # PHP
 					re.compile(r'(function.*?\(.*?\))', re.I),
-					re.compile(r'Configuration\.Factory', re.I),
-					re.compile(r'(?:border)|(?:background)-color)', re.I),
-					re.compile(r'Traceback \(most recent call last\)', re.I)
-				],
-	'white_list' : [ # This is for regex that is almost sure to be in database leaks
-					re.compile(r'[-|+\n]+?\s*(?:table)|(?:column)|(?:customers?)|(?:email)|(?:users?)|(?:members?)|(?:accounts?)[-_|/\s]?(?:address)|(?:names?)|(?:ids?[^")])\s*[-|]', re.I)
+					re.compile(r'Configuration(?:\.Factory)|(?:\s*file)', re.I),
+					re.compile(r'(?:border)|(?:background)-color', re.I), # Basic CSS (Will need to be improved)
+					re.compile(r'Traceback \(most recent call last\)', re.I),
+					re.compile(r'java\.(?:util)|(?:lang)|(?:io)', re.I),
+					re.compile(r'sqlserver\.jdbc', re.I)
 				]
+	# 'whitelist' : [ # This is for regex that is almost sure to be in database leaks
+	# 				re.compile(r'[-|+\n]+\s*(?:table)|(?:column)|(?:customers?)|(?:email)|(?:users?)|(?:members?)|(?:accounts?)[-_|/\s]?(?:address)|(?:names?)|(?:ids?[^")])\s*[-|]', re.I)
+	# 			]
 }

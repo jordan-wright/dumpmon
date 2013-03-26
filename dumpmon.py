@@ -52,7 +52,7 @@ def monitor():
 				paste = pastie.get()
 				pastie.ref_id = paste.id
 				log('Checking ' + paste.url)
-				paste.text = requests.get(paste.url).text
+				paste.text = pastie.download(paste.url)
 				tweet = build_tweet(paste)
 				if tweet:
 					print tweet
@@ -82,6 +82,8 @@ def build_tweet(paste):
 			if paste.num_hashes > 0 and paste.num_emails > 0: tweet += ' E/H: ' + str(round(paste.num_emails / float(paste.num_hashes), 2))
 			tweet += ' Keywords: ' + str(paste.db_keywords)
 			tweet += ' #DB_LEAK'
+		elif paste.type == 'google_api':
+			tweet += 'Found possible Google API key(s)'
 		elif paste.type in ['Cisco', 'Juniper']:
 			tweet += ' Possible ' + paste.type + ' configuration'
 		elif paste.type == 'ssh_private':

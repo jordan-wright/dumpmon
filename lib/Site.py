@@ -1,5 +1,6 @@
 from Queue import Queue
 import requests
+import time
 from requests import ConnectionError
 
 class Site(object):
