@@ -42,7 +42,8 @@ class Slexy(Site):
 				with l_lock:
 					helper.log('Checking ' + paste.url)
 				paste.text = helper.download(paste.url)
-				tweet = helper.build_tweet(paste)
+				with l_lock:
+					tweet = helper.build_tweet(paste)
 				if tweet:
 					print tweet
 					with t_lock:
