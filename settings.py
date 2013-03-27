@@ -14,6 +14,7 @@ DB_KEYWORDS_THRESHOLD = .65
 # Time to Sleep for each site
 SLEEP_SLEXY = 60
 SLEEP_PASTEBIN = 10
+SLEEP_PASTIE = 30
 
 # Other configuration
 tweet_history = ".tweet_history"
