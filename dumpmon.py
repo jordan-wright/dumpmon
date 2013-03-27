@@ -28,17 +28,19 @@ def monitor():
                       consumer_secret=CONSUMER_SECRET,
                       access_token_key=ACCESS_TOKEN,
                       access_token_secret=ACCESS_TOKEN_SECRET)
-	pastie = Pastebin()
-	slexy = Slexy()
 	# Create lock for both output log and tweet action
 	log_lock = threading.Lock()
 	tweet_lock = threading.Lock()
-	pastebin_thread = threading.Thread(target=pastie.monitor, args=[bot,log_lock, tweet_lock])
+
+	pastebin_thread = threading.Thread(target=Pastebin().monitor, args=[bot,log_lock, tweet_lock])
 	pastebin_thread.daemon = True
 	pastebin_thread.start()
-	slexy_thread = threading.Thread(target=slexy.monitor, args=[bot,log_lock, tweet_lock])
+
+	slexy_thread = threading.Thread(target=Slexy().monitor, args=[bot,log_lock, tweet_lock])
 	slexy_thread.daemon = True
 	slexy_thread.start()
+
+	# Let threads run
 	try:
 		while(1):
 			sleep(5)
