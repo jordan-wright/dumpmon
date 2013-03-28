@@ -1,4 +1,4 @@
-![Dumpmon Logo](assets/logo.png?raw=true)
+![Dumpmon Logo](assets/logo-small.png?raw=true)
 # dumpmon
 ## Twitter-bot which monitors paste sites for interesting content
 
