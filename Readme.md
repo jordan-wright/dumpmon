@@ -1,4 +1,4 @@
-![Dumpmon Logo](http://raw.github.com/jordan-wright/dumpmon/assets/logo.png)
+![Dumpmon Logo](assets/logo.png?raw=true)
 # dumpmon
 ## Twitter-bot which monitors paste sites for interesting content
 
