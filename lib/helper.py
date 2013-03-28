@@ -55,7 +55,6 @@ def build_tweet(paste):
 			if paste.num_hashes > 0: tweet += ' Hashes: ' + str(paste.num_hashes)
 			if paste.num_hashes > 0 and paste.num_emails > 0: tweet += ' E/H: ' + str(round(paste.num_emails / float(paste.num_hashes), 2))
 			tweet += ' Keywords: ' + str(paste.db_keywords)
-			tweet += ' #infoleak'
 		elif paste.type == 'google_api':
 			tweet += ' Found possible Google API key(s)'
 		elif paste.type in ['Cisco', 'Juniper']:
@@ -64,6 +63,7 @@ def build_tweet(paste):
 			tweet += ' Possible SSH private key'
 		elif paste.type == 'honeypot':
 			tweet += ' Dionaea Honeypot Log'
+		tweet += '#infoleak'
 	if paste.num_emails > 0:
 		print paste.emails
 	return tweet

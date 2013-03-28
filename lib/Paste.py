@@ -40,7 +40,7 @@ class Paste(object):
 		'''
 		# Get the amount of emails
 		self.emails = list(set(regexes['email'].findall(self.text)))
-		self.hashes = list(set(regexes['hash32'].findall(self.text)))
+		self.hashes = regexes['hash32'].findall(self.text)
 		self.num_emails = len(self.emails)
 		self.num_hashes = len(self.hashes)
 		for regex in regexes['db_keywords']:
