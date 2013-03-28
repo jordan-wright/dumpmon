@@ -9,11 +9,11 @@ ACCESS_TOKEN_SECRET = 'your_access_token_secret'
 # Thresholds
 EMAIL_THRESHOLD = 20
 HASH_THRESHOLD = 30
-DB_KEYWORDS_THRESHOLD = .65
+DB_KEYWORDS_THRESHOLD = .55
 
 # Time to Sleep for each site
 SLEEP_SLEXY = 60
-SLEEP_PASTEBIN = 10
+SLEEP_PASTEBIN = 15
 SLEEP_PASTIE = 30
 
 # Other configuration

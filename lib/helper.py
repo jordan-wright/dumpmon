@@ -6,7 +6,7 @@ Author: Jordan
 
 import requests
 import settings
-from time import sleep
+from time import sleep, strftime
 
 
 r = requests.Session()
@@ -30,7 +30,7 @@ def record(text):
 
 	'''
 	with open(settings.tweet_history, 'a') as history:
-		history.write(text + '\n')
+		history.write(strftime('[%b %d, %Y %I:%M:%S]') + text + '\n')
 
 def log(text):
 	'''
@@ -62,6 +62,8 @@ def build_tweet(paste):
 			tweet += ' Possible ' + paste.type + ' configuration'
 		elif paste.type == 'ssh_private':
 			tweet += ' Possible SSH private key'
+		elif paste.type == 'honeypot':
+			tweet += ' Dionaea Honeypot Log'
 	if paste.num_emails > 0:
 		print paste.emails
 	return tweet

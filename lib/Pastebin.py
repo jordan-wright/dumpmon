@@ -40,7 +40,7 @@ class Pastebin(Site):
 				paste = self.get()
 				self.ref_id = paste.id
 				with l_lock:
-					helper.log('Checking ' + paste.url)
+					helper.log('[*] Checking ' + paste.url)
 				paste.text = helper.download(paste.url)
 				with l_lock:
 					tweet = helper.build_tweet(paste)
@@ -48,11 +48,11 @@ class Pastebin(Site):
 					print tweet
 					with t_lock:
 						helper.record(tweet)
-						#bot.PostUpdate(paste.url, tweet)
+						bot.PostUpdate(tweet)
 			self.update()
 			# If no new results... sleep for 5 sec
 			while self.empty():
 				with l_lock:
-					helper.log('No results... sleeping')
+					helper.log('[*] No results... sleeping')
 				sleep(SLEEP_PASTEBIN)
 				self.update()
