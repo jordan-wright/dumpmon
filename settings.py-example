@@ -17,5 +17,5 @@ SLEEP_PASTEBIN = 15
 SLEEP_PASTIE = 30
 
 # Other configuration
-tweet_history = ".tweet_history"
-log_file = ".output_log"
+tweet_history = "tweet.history"
+log_file = "output.log"
