@@ -1,4 +1,4 @@
-from regexes import regexes
+from .regexes import regexes
 import settings
 
 
@@ -8,7 +8,7 @@ def log(text):
 
     '''
     if text:
-        print text.encode('utf-8')
+        print(text.encode('utf-8'))
         with open(settings.log_file, 'a') as logfile:
             logfile.write(text.encode('utf-8') + '\n')
 

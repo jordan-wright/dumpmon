@@ -1,4 +1,4 @@
-from Queue import Queue
+from queue import Queue
 import requests
 import time
 from requests import ConnectionError
@@ -52,4 +52,4 @@ class Site(object):
         self.queue = []
 
     def list(self):
-        print '\n'.join(url for url in self.queue)
+        print('\n'.join(url for url in self.queue))

@@ -1,7 +1,7 @@
-from Site import Site
-from Paste import Paste
+from .Site import Site
+from .Paste import Paste
 from bs4 import BeautifulSoup
-import helper
+from . import helper
 from time import sleep
 from settings import SLEEP_SLEXY
 from twitter import TwitterError
@@ -25,7 +25,7 @@ class Slexy(Site):
 
     def update(self):
         '''update(self) - Fill Queue with new Slexy IDs'''
-        print '[*] Retrieving Slexy ID\'s'
+        print('[*] Retrieving Slexy ID\'s')
         results = BeautifulSoup(helper.download(self.BASE_URL + '/recent')).find_all(
             lambda tag: tag.name == 'td' and tag.a and '/view/' in tag.a['href'])
         new_pastes = []
@@ -38,7 +38,7 @@ class Slexy(Site):
                 break
             new_pastes.append(paste)
         for entry in new_pastes[::-1]:
-            print '[+] Adding URL: ' + entry.url
+            print('[+] Adding URL: ' + entry.url)
             self.put(entry)
 
     def monitor(self, bot, l_lock, t_lock):
@@ -53,7 +53,7 @@ class Slexy(Site):
                 with l_lock:
                     tweet = helper.build_tweet(paste)
                 if tweet:
-                    print tweet
+                    print(tweet)
                     with t_lock:
                         helper.record(tweet)
                         try:

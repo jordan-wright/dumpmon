@@ -1,7 +1,7 @@
-from Site import Site
-from Paste import Paste
+from .Site import Site
+from .Paste import Paste
 from bs4 import BeautifulSoup
-import helper
+from . import helper
 from time import sleep
 from settings import SLEEP_PASTIE
 from twitter import TwitterError
@@ -25,7 +25,7 @@ class Pastie(Site):
 
     def update(self):
         '''update(self) - Fill Queue with new Pastie IDs'''
-        print '[*] Retrieving Pastie ID\'s'
+        print('[*] Retrieving Pastie ID\'s')
         results = [tag for tag in BeautifulSoup(helper.download(
             self.BASE_URL + '/pastes')).find_all('p', 'link') if tag.a]
         new_pastes = []
@@ -39,7 +39,7 @@ class Pastie(Site):
                 break
             new_pastes.append(paste)
         for entry in new_pastes[::-1]:
-            print '[+] Adding URL: ' + entry.url
+            print('[+] Adding URL: ' + entry.url)
             self.put(entry)
 
     def monitor(self, bot, l_lock, t_lock):
@@ -56,7 +56,7 @@ class Pastie(Site):
                 with l_lock:
                     tweet = helper.build_tweet(paste)
                 if tweet:
-                    print tweet
+                    print(tweet)
                     with t_lock:
                         helper.record(tweet)
                         try:

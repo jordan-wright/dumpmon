@@ -20,9 +20,9 @@ def download(url, headers=None):
     try:
         response = r.get(url).text
     except requests.ConnectionError:
-        print '[!] Critical Error - Cannot connect to Pastebin'
+        print('[!] Critical Error - Cannot connect to Pastebin')
         sleep(5)
-        print '[!] Retrying...'
+        print('[!] Retrying...')
         response = self.download(url)
     return response
 
@@ -41,7 +41,7 @@ def log(text):
     log(text): Logs message to both STDOUT and to .output_log file
 
     '''
-    print text
+    print(text)
     with open(settings.log_file, 'a') as logfile:
         logfile.write(text + '\n')
 
@@ -73,5 +73,5 @@ def build_tweet(paste):
             tweet += ' Dionaea Honeypot Log'
         tweet += ' #infoleak'
     if paste.num_emails > 0:
-        print paste.emails
+        print(paste.emails)
     return tweet

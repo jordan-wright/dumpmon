@@ -6,6 +6,7 @@ For more overview, check out the blog post [here.](http://raidersec.blogspot.com
 
 ## Dependencies
 	[python-twitter](https://code.google.com/p/python-twitter/)
+    $ pip install python-twitter
 	$ pip install beautifulsoup4
 	$ pip install requests
 
