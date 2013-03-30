@@ -13,4 +13,4 @@ Next, edit the settings.py to include your Twitter application settings.
 
 ## Executing dumpmon
 
-> python dumpmon.py
+	python dumpmon.py
