@@ -1,4 +1,7 @@
-from queue import Queue
+try:
+    from queue import Queue # python3
+except ImportError:
+    from Queue import Queue # python2
 import requests
 import time
 from requests import ConnectionError
@@ -73,8 +76,6 @@ class Site(object):
                 if paste.match():
                     logging.info('Found interesting stuff')
                     self.redisc.set(paste.url, paste.text)
-                    print(paste.text)
-                    # TODO: dump in db
             self.update()
             while self.empty():
                 logging.debug('No results... sleeping')
