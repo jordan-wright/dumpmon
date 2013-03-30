@@ -1,7 +1,19 @@
-![Dumpmon Logo](assets/logo-small.png?raw=true)
+Forked from: https://github.com/jordan-wright/dumpmon - original
+version is a twitter-bot, this version save everything in a redis
+database.
+
 # dumpmon
-## Twitter-bot which monitors paste sites for interesting content
+Monitors paste sites (pastebin, slexy, paste) for leaked content
 
-For more overview, check out the blog post [here.](http://raidersec.blogspot.com/2013/03/introducing-dumpmon-twitter-bot-that.html)
+# install
+## requirements:
 
-## Full documentation in the works
+    $ pip install beautifulsoup4
+    $ pip install requests
+    $ pip install redis
+    $ cp settings.py-example settings.py
+
+edit settings.py file
+
+    $ python dumpmon.py
+
