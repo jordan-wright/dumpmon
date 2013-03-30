@@ -1,6 +1,17 @@
-from .regexes import regexes
+from regexes import regexes
 import settings
-import logging
+
+
+def log(text):
+    '''
+    log(text): Logs message to both STDOUT and to .output_log file
+
+    '''
+    if text:
+        print text.encode('utf-8')
+        with open(settings.log_file, 'a') as logfile:
+            logfile.write(text.encode('utf-8') + '\n')
+
 
 class Paste(object):
     def __init__(self):
@@ -36,12 +47,12 @@ class Paste(object):
         self.num_hashes = len(self.hashes)
         for regex in regexes['db_keywords']:
             if regex.search(self.text):
-                logging.debug('\t[+] ' + regex.search(self.text).group(1))
+                log('\t[+] ' + regex.search(self.text).group(1))
                 self.db_keywords += round(1/float(
                     len(regexes['db_keywords'])), 2)
         for regex in regexes['blacklist']:
             if regex.search(self.text):
-                logging.debug('\t[-] ' + regex.search(self.text).group(1))
+                log('\t[-] ' + regex.search(self.text).group(1))
                 self.db_keywords -= round(1.25 * (
                     1/float(len(regexes['db_keywords']))), 2)
         if (self.num_emails >= settings.EMAIL_THRESHOLD) or (self.num_hashes >= settings.HASH_THRESHOLD) or (self.db_keywords >= settings.DB_KEYWORDS_THRESHOLD):
