@@ -4,6 +4,7 @@ from bs4 import BeautifulSoup
 import helper
 from time import sleep
 from settings import SLEEP_PASTEBIN
+from twitter import TwitterError
 
 class PastebinPaste(Paste):
 	def __init__(self, id):
@@ -48,7 +49,10 @@ class Pastebin(Site):
 					print tweet
 					with t_lock:
 						helper.record(tweet)
-						bot.PostUpdate(tweet)
+						try:
+							bot.PostUpdate(tweet)
+						except TwitterError:
+							pass
 			self.update()
 			# If no new results... sleep for 5 sec
 			while self.empty():
