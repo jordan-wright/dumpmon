@@ -5,6 +5,7 @@ from . import helper
 from time import sleep
 from settings import SLEEP_PASTIE
 from twitter import TwitterError
+import logging
 
 
 class PastiePaste(Paste):
@@ -21,11 +22,12 @@ class Pastie(Site):
             last_id = None
         self.ref_id = last_id
         self.BASE_URL = 'http://pastie.org'
+        self.sleep = SLEEP_PASTIE
         super(Pastie, self).__init__()
 
     def update(self):
         '''update(self) - Fill Queue with new Pastie IDs'''
-        print('[*] Retrieving Pastie ID\'s')
+        logging.info('Retrieving Pastie ID\'s')
         results = [tag for tag in BeautifulSoup(helper.download(
             self.BASE_URL + '/pastes')).find_all('p', 'link') if tag.a]
         new_pastes = []
@@ -39,34 +41,8 @@ class Pastie(Site):
                 break
             new_pastes.append(paste)
         for entry in new_pastes[::-1]:
-            print('[+] Adding URL: ' + entry.url)
+            logging.debug('Adding URL: ' + entry.url)
             self.put(entry)
 
-    def monitor(self, bot, l_lock, t_lock):
-        self.update()
-        while(1):
-            while not self.empty():
-                paste = self.get()
-                self.ref_id = paste.id
-                with l_lock:
-                    helper.log('[*] Checking ' + paste.url)
-                # goober pastie - Not actually showing *raw* text.. Still need
-                # to parse it out
-                paste.text = BeautifulSoup(helper.download(paste.url)).pre.text
-                with l_lock:
-                    tweet = helper.build_tweet(paste)
-                if tweet:
-                    print(tweet)
-                    with t_lock:
-                        helper.record(tweet)
-                        try:
-                            bot.PostUpdate(tweet)
-                        except TwitterError:
-                            pass
-            self.update()
-            # If no new results... sleep for 5 sec
-            while self.empty():
-                with l_lock:
-                    helper.log('[*] No results... sleeping')
-                sleep(SLEEP_PASTIE)
-                self.update()
+    def get_paste_text(self, paste):
+        return BeautifulSoup(helper.download(paste.url)).pre.text

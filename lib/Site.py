@@ -1,12 +1,17 @@
-from queue import Queue
+from Queue import Queue
 import requests
 import time
 from requests import ConnectionError
+import logging
+import helper
 
 
 class Site(object):
     '''
-    Site - parent class used for a generic 'Queue' structure with a few helper methods and features. Impelements the following methods:
+    Site - parent class used for a generic
+    'Queue' structure with a few helper methods
+    and features. Implements the following methods:
+
             empty() - Is the Queue empty
             get(): Get the next item in the queue
             put(item): Puts an item in the queue
@@ -53,3 +58,28 @@ class Site(object):
 
     def list(self):
         print('\n'.join(url for url in self.queue))
+
+    def monitor(self, bot, t_lock):
+        self.update()
+        while(1):
+            while not self.empty():
+                paste = self.get()
+                self.ref_id = paste.id
+                logging.info('[*] Checking ' + paste.url)
+                # goober pastie - Not actually showing *raw* text.. Still need
+                # to parse it out
+                paste.text = self.get_paste_text(paste)
+                tweet = helper.build_tweet(paste)
+                if tweet:
+                    logging.info(tweet)
+                    with t_lock:
+                        helper.record(tweet)
+                        try:
+                            bot.PostUpdate(tweet)
+                        except TwitterError:
+                            pass
+            self.update()
+            while self.empty():
+                logging.debug('[*] No results... sleeping')
+                time.sleep(self.sleep)
+                self.update()

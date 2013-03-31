@@ -7,6 +7,7 @@ Author: Jordan
 import requests
 import settings
 from time import sleep, strftime
+import logging
 
 
 r = requests.Session()

@@ -17,6 +17,7 @@ from time import sleep
 import twitter
 from settings import CONSUMER_KEY, CONSUMER_SECRET, ACCESS_TOKEN, ACCESS_TOKEN_SECRET
 import threading
+import logging
 
 
 def monitor():
@@ -24,8 +25,17 @@ def monitor():
     monitor() - Main function... creates and starts threads
 
     '''
-    log('[*] Monitoring...')
-    log('[*] Ctrl+C to quit')
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "-v", "--verbose", help="more verbose", action="store_true")
+    args = parser.parse_args()
+    level = logging.INFO
+    if args.verbose:
+        level = logging.DEBUG
+    logging.basicConfig(
+        format='%(asctime)s [%(levelname)s] %(message)s', level=level)
+    logging.info('Monitoring...')
     bot = twitter.Api(consumer_key=CONSUMER_KEY,
                       consumer_secret=CONSUMER_SECRET,
                       access_token_key=ACCESS_TOKEN,
@@ -35,11 +45,11 @@ def monitor():
     tweet_lock = threading.Lock()
 
     pastebin_thread = threading.Thread(
-        target=Pastebin().monitor, args=[bot, log_lock, tweet_lock])
+        target=Pastebin().monitor, args=[bot, tweet_lock])
     slexy_thread = threading.Thread(
-        target=Slexy().monitor, args=[bot, log_lock, tweet_lock])
+        target=Slexy().monitor, args=[bot, tweet_lock])
     pastie_thead = threading.Thread(
-        target=Pastie().monitor, args=[bot, log_lock, tweet_lock])
+        target=Pastie().monitor, args=[bot, tweet_lock])
 
     for thread in (pastebin_thread, slexy_thread, pastie_thead):
         thread.daemon = True
@@ -50,7 +60,7 @@ def monitor():
         while(1):
             sleep(5)
     except KeyboardInterrupt:
-        log('Stopped.')
+        logging.warn('Stopped.')
 
 
 if __name__ == "__main__":

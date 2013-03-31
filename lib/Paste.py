@@ -1,5 +1,6 @@
 from .regexes import regexes
 import settings
+import logging
 
 
 def log(text):
@@ -47,12 +48,12 @@ class Paste(object):
         self.num_hashes = len(self.hashes)
         for regex in regexes['db_keywords']:
             if regex.search(self.text):
-                log('\t[+] ' + regex.search(self.text).group(1))
+                logging.debug('\t[+] ' + regex.search(self.text).group(1))
                 self.db_keywords += round(1/float(
                     len(regexes['db_keywords'])), 2)
         for regex in regexes['blacklist']:
             if regex.search(self.text):
-                log('\t[-] ' + regex.search(self.text).group(1))
+                logging.debug('\t[-] ' + regex.search(self.text).group(1))
                 self.db_keywords -= round(1.25 * (
                     1/float(len(regexes['db_keywords']))), 2)
         if (self.num_emails >= settings.EMAIL_THRESHOLD) or (self.num_hashes >= settings.HASH_THRESHOLD) or (self.db_keywords >= settings.DB_KEYWORDS_THRESHOLD):
