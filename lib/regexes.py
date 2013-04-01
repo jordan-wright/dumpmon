@@ -3,7 +3,7 @@ import re
 regexes = {
     'email': re.compile(r'[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}', re.I),
     #'ssn' : re.compile(r'\d{3}-?\d{2}-?\d{4}'),
-    'hash32': re.compile(r'[^A-F\d/]([A-F\d]{32})[^A-F\d]', re.I),
+    'hash32': re.compile(r'[^<A-F\d/]([A-F\d]{32})[^A-F\d]', re.I),
     'FFF': re.compile(r'FBI\s*Friday', re.I),  # will need to work on this to not match CSS
     'lulz': re.compile(r'(lulzsec|antisec)', re.I),
     'cisco_hash': re.compile(r'enable\s+secret', re.I),

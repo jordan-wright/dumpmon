@@ -2,6 +2,7 @@ from Queue import Queue
 import requests
 import time
 from requests import ConnectionError
+from twitter import TwitterError
 import logging
 import helper
 
@@ -75,7 +76,7 @@ class Site(object):
                     with t_lock:
                         helper.record(tweet)
                         try:
-                            bot.PostUpdate(tweet)
+                            bot.statuses.update(status=tweet)
                         except TwitterError:
                             pass
             self.update()

@@ -21,9 +21,9 @@ def download(url, headers=None):
     try:
         response = r.get(url).text
     except requests.ConnectionError:
-        print('[!] Critical Error - Cannot connect to Pastebin')
+        logging.warn('[!] Critical Error - Cannot connect to site')
         sleep(5)
-        print('[!] Retrying...')
+        logging.warn('[!] Retrying...')
         response = self.download(url)
     return response
 

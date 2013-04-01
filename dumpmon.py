@@ -14,8 +14,8 @@ from lib.Slexy import Slexy, SlexyPaste
 from lib.Pastie import Pastie, PastiePaste
 from lib.helper import log
 from time import sleep
-import twitter
-from settings import CONSUMER_KEY, CONSUMER_SECRET, ACCESS_TOKEN, ACCESS_TOKEN_SECRET
+from twitter import Twitter, OAuth
+from settings import CONSUMER_KEY, CONSUMER_SECRET, ACCESS_TOKEN, ACCESS_TOKEN_SECRET, log_file
 import threading
 import logging
 
@@ -34,12 +34,12 @@ def monitor():
     if args.verbose:
         level = logging.DEBUG
     logging.basicConfig(
-        format='%(asctime)s [%(levelname)s] %(message)s', level=level)
+        format='%(asctime)s [%(levelname)s] %(message)s', filename=log_file, level=level)
     logging.info('Monitoring...')
-    bot = twitter.Api(consumer_key=CONSUMER_KEY,
-                      consumer_secret=CONSUMER_SECRET,
-                      access_token_key=ACCESS_TOKEN,
-                      access_token_secret=ACCESS_TOKEN_SECRET)
+    bot = Twitter(
+        auth=OAuth(ACCESS_TOKEN, ACCESS_TOKEN_SECRET,
+            CONSUMER_KEY, CONSUMER_SECRET)
+        )
     # Create lock for both output log and tweet action
     log_lock = threading.Lock()
     tweet_lock = threading.Lock()
