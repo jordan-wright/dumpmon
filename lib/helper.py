@@ -24,17 +24,8 @@ def download(url, headers=None):
         logging.warn('[!] Critical Error - Cannot connect to site')
         sleep(5)
         logging.warn('[!] Retrying...')
-        response = self.download(url)
+        response = download(url)
     return response
-
-
-def record(text):
-    '''
-    record(text) : Records text to the tweet_history file
-
-    '''
-    with open(settings.tweet_history, 'a') as history:
-        history.write(strftime('[%b %d, %Y %I:%M:%S]') + text + '\n')
 
 
 def log(text):
