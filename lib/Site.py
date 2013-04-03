@@ -1,8 +1,10 @@
 from Queue import Queue
 import requests
 import time
+from pymongo import MongoClient
 from requests import ConnectionError
 from twitter import TwitterError
+from settings import USE_DB, DB_HOST, DB_PORT
 import logging
 import helper
 
@@ -30,6 +32,10 @@ class Site(object):
     def __init__(self, queue=None):
         if queue is None:
             self.queue = []
+        if USE_DB:
+            # Lazily create the db and collection if not present
+            self.db_client = MongoClient(DB_HOST, DB_PORT).paste_db.pastes
+
 
     def empty(self):
         return len(self.queue) == 0
@@ -67,14 +73,22 @@ class Site(object):
                 paste = self.get()
                 self.ref_id = paste.id
                 logging.info('[*] Checking ' + paste.url)
-                # goober pastie - Not actually showing *raw* text.. Still need
-                # to parse it out
                 paste.text = self.get_paste_text(paste)
                 tweet = helper.build_tweet(paste)
                 if tweet:
                     logging.info(tweet)
                     with t_lock:
-                        helper.record(tweet)
+                        if USE_DB:
+                           self.db_client.save({
+                                'pid' : paste.id,
+                                'text' : paste.text,
+                                'emails' : paste.emails,
+                                'hashes' : paste.hashes,
+                                'num_emails' : paste.num_emails,
+                                'num_hashes' : paste.num_hashes,
+                                'type' : paste.type,
+                                'db_keywords' : paste.db_keywords
+                               })
                         try:
                             bot.statuses.update(status=tweet)
                         except TwitterError:
