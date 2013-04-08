@@ -57,7 +57,7 @@ def build_tweet(paste):
             tweet += ' Keywords: ' + str(paste.db_keywords)
         elif paste.type == 'google_api':
             tweet += ' Found possible Google API key(s)'
-        elif paste.type in ['Cisco', 'Juniper']:
+        elif paste.type in ['cisco', 'juniper']:
             tweet += ' Possible ' + paste.type + ' configuration'
         elif paste.type == 'ssh_private':
             tweet += ' Possible SSH private key'

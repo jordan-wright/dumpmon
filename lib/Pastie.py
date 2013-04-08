@@ -12,7 +12,7 @@ class PastiePaste(Paste):
     def __init__(self, id):
         self.id = id
         self.headers = None
-        self.url = 'http://pastie.org/pastes' + self.id + '/text'
+        self.url = 'http://pastie.org/pastes/' + self.id + '/text'
         super(PastiePaste, self).__init__()
 
 
@@ -35,7 +35,7 @@ class Pastie(Site):
             results = results[:60]
         for entry in results:
             paste = PastiePaste(entry.a['href'].replace(
-                self.BASE_URL + '/pastes', ''))
+                self.BASE_URL + '/pastes/', ''))
             # Check to see if we found our last checked URL
             if paste.id == self.ref_id:
                 break
