@@ -2,18 +2,6 @@ from .regexes import regexes
 import settings
 import logging
 
-
-def log(text):
-    '''
-    log(text): Logs message to both STDOUT and to .output_log file
-
-    '''
-    if text:
-        print(text.encode('utf-8'))
-        with open(settings.log_file, 'a') as logfile:
-            logfile.write(text.encode('utf-8') + '\n')
-
-
 class Paste(object):
     def __init__(self):
         '''
@@ -65,4 +53,8 @@ class Paste(object):
         if regexes['google_api'].search(self.text):
             self.type = 'google_api'
         # if regexes['juniper'].search(self.text): self.type = 'Juniper'
+        for regex in regexes['banlist']:
+            if regex.search(self.text):
+                self.type = None
+                break
         return self.type

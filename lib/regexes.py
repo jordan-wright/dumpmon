@@ -8,7 +8,7 @@ regexes = {
     'lulz': re.compile(r'(lulzsec|antisec)', re.I),
     'cisco_hash': re.compile(r'enable\s+secret', re.I),
     'cisco_pass': re.compile(r'enable\s+password', re.I),
-    'google_api': re.compile(r'(AIza.{35})'),
+    'google_api': re.compile(r'\W(AIza.{35})'),
     'honeypot': re.compile(r'<dionaea\.capture>', re.I),
     'db_keywords': [
     re.compile(
@@ -44,8 +44,10 @@ regexes = {
         re.compile(
             r'(java\.(util|lang|io))', re.I),
         re.compile(r'(sqlserver\.jdbc)', re.I)
+    ],
+    # The banlist is the list of regexes that are found in crash reports
+    'banlist': [
+        re.compile(r'faf\.fa\.proxies', re.I),
+        re.compile(r'Technic Launcher is starting', re.I)
     ]
-    # 'whitelist' : [ # This is for regex that is almost sure to be in database leaks
-    # 				re.compile(r'[-|+\n]+\s*(?:table)|(?:column)|(?:customers?)|(?:email)|(?:users?)|(?:members?)|(?:accounts?)[-_|/\s]?(?:address)|(?:names?)|(?:ids?[^")])\s*[-|]', re.I)
-    # 			]
 }
