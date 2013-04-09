@@ -1,5 +1,9 @@
 # settings.py
 
+USE_DB = True
+DB_HOST = 'localhost'
+DB_PORT = 27017
+
 # Twitter Settings
 CONSUMER_KEY = 'your_consumer_key'
 CONSUMER_SECRET = 'your_consumer_secret'
