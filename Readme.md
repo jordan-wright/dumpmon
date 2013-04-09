@@ -16,6 +16,7 @@ Next, edit the settings.py to include your Twitter application settings.
 ## Setting up MongoDB support
 dumpmon has the ability to cache pastes using MongoDB. Simply setup an instance of mongod,
 and set the following values in settings to the appropriate values:
+
 	USE_DB = True
 	DB_HOST = 'localhost'
 	DB_PORT = 27017
