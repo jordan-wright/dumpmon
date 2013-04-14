@@ -1,6 +1,7 @@
 from Queue import Queue
 import requests
 import time
+import re
 from pymongo import MongoClient
 from requests import ConnectionError
 from twitter import TwitterError
@@ -79,7 +80,7 @@ class Site(object):
                     logging.info(tweet)
                     with t_lock:
                         if USE_DB:
-                           self.db_client.save({
+                            self.db_client.save({
                                 'pid' : paste.id,
                                 'text' : paste.text,
                                 'emails' : paste.emails,

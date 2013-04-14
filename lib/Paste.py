@@ -1,6 +1,7 @@
 from .regexes import regexes
 import settings
 import logging
+import re
 
 class Paste(object):
     def __init__(self):
@@ -14,6 +15,7 @@ class Paste(object):
         self.num_hashes = 0
         self.text = None
         self.type = None
+        self.sites = None
         self.db_keywords = 0.0
 
     def match(self):
@@ -34,6 +36,8 @@ class Paste(object):
         self.hashes = regexes['hash32'].findall(self.text)
         self.num_emails = len(self.emails)
         self.num_hashes = len(self.hashes)
+        if self.num_emails > 0:
+            self.sites = list(set([re.search('@(.*)$', email).group(1).lower() for email in self.emails]))
         for regex in regexes['db_keywords']:
             if regex.search(self.text):
                 logging.debug('\t[+] ' + regex.search(self.text).group(1))
