@@ -48,6 +48,9 @@ regexes = {
     # The banlist is the list of regexes that are found in crash reports
     'banlist': [
         re.compile(r'faf\.fa\.proxies', re.I),
-        re.compile(r'Technic Launcher is starting', re.I)
+        re.compile(r'Technic Launcher is starting', re.I),
+        re.compile(r'TDSS rootkit removing tool', re.I),
+        re.compile(r'INFO: Processing cookbook_file', re.I),
+        re.compile(r'loading\.target\.rdio', re.I)
     ]
 }
