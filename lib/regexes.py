@@ -51,6 +51,7 @@ regexes = {
         re.compile(r'Technic Launcher is starting', re.I),
         re.compile(r'TDSS rootkit removing tool', re.I),
         re.compile(r'INFO: Processing cookbook_file', re.I),
-        re.compile(r'loading\.target\.rdio', re.I)
+        re.compile(r'loading\.target\.rdio', re.I),
+        re.compile(r'<key>SysInfoCrashReporterKey</key>', re.I)
     ]
 }
