@@ -49,9 +49,15 @@ regexes = {
     'banlist': [
         re.compile(r'faf\.fa\.proxies', re.I),
         re.compile(r'Technic Launcher is starting', re.I),
-        re.compile(r'TDSS rootkit removing tool', re.I),
-        re.compile(r'INFO: Processing cookbook_file', re.I),
-        re.compile(r'loading\.target\.rdio', re.I),
-        re.compile(r'<key>SysInfoCrashReporterKey</key>', re.I)
+        re.compile(r'OTL logfile created on', re.I),
+        re.compile(r'RO Game Client crashed!', re.I),
+        re.compile(r'Selecting PSO2 Directory', re.I),
+        re.compile(r'TDSS Rootkit', re.I),
+        re.compile(r'SysInfoCrashReporterKey', re.I),
+        re.compile(r'Current OS Full name: ', re.I),
+        re.compile(r'Multi Theft Auto: ', re.I),
+        re.compile(r'Initializing cgroup subsys cpuset', re.I),
+        re.compile(r'Init vk network', re.I),
+        re.compile(r'MediaTomb UPnP Server', re.I)
     ]
 }
