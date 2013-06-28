@@ -5,7 +5,7 @@
 For more overview, check out the blog post [here.](http://raidersec.blogspot.com/2013/03/introducing-dumpmon-twitter-bot-that.html)
 
 ## Dependencies
-	[python-twitter](https://code.google.com/p/python-twitter/)
+	[twitter library](https://pypi.python.org/pypi/twitter)
     $ pip install python-twitter
 	$ pip install beautifulsoup4
 	$ pip install requests
