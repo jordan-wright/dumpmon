@@ -63,6 +63,8 @@ def build_tweet(paste):
             tweet += ' Possible SSH private key'
         elif paste.type == 'honeypot':
             tweet += ' Dionaea Honeypot Log'
+        elif paste.type == 'pgp_private':
+            tweet += ' Found possible PGP Private Key'
         tweet += ' #infoleak'
     if paste.num_emails > 0:
         print(paste.emails)
