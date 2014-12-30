@@ -56,6 +56,8 @@ class Paste(object):
             self.type = 'honeypot'
         if regexes['google_api'].search(self.text):
             self.type = 'google_api'
+        if regexes['pgp_private'].search(self.text):
+            self.type = 'pgp_private'
         # if regexes['juniper'].search(self.text): self.type = 'Juniper'
         for regex in regexes['banlist']:
             if regex.search(self.text):
