@@ -6,6 +6,7 @@ from time import sleep
 from settings import SLEEP_PASTEBIN
 from twitter import TwitterError
 import logging
+import requests
 
 
 class PastebinPaste(Paste):
@@ -23,6 +24,7 @@ class Pastebin(Site):
         self.ref_id = last_id
         self.BASE_URL = 'http://pastebin.com'
         self.sleep = SLEEP_PASTEBIN
+        self.session = requests.Session()
         super(Pastebin, self).__init__()
 
     def update(self):
