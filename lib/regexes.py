@@ -47,6 +47,7 @@ regexes = {
         re.compile(r'Multi Theft Auto: ', re.I),
         re.compile(r'Initializing cgroup subsys cpuset', re.I),
         re.compile(r'Init vk network', re.I),
-        re.compile(r'MediaTomb UPnP Server', re.I)
+        re.compile(r'MediaTomb UPnP Server', re.I),
+        re.compile(r'#EXTM3U\n#EXTINF:', re.I)
     ]
 }
